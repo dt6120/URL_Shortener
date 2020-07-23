@@ -1,0 +1,84 @@
+{% extends 'shortener/base.html' %}
+
+{% block navbar %}
+
+<ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'shortener:shorten' %}"><i class="fas fa-link"></i> URL Shortener</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'shortener:check' %}"><i class="fas fa-check"></i> Check availability</a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url 'shortener:my_links' %}"><i class="fas fa-list"></i> My links</a>
+    </li>
+    <li class="nav-item">
+        <form class="form-inline my-2 my-lg-0" action="{% url 'shortener:goto_new' %}">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
+            <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </li>
+</ul>
+
+{% endblock %}
+
+
+{% block content %}
+{% if links %}
+    <div class="container table-respopnsive-xl">
+        <h1 class="display-3 text-center">My Links</h1>
+        <table class="table table-hover table-bordered table-borderless table-md mt-5">
+            <thead>
+                <tr class="table-info">
+                    <th>Original Link</th>
+                    <th>Shortened Link</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for link in links %}
+                    <tr>
+                        <td>
+                            <a href="{{ link.original_link }}" target="_blank">
+                                {{ link.original_link }}
+                            </a>
+                        </td>
+                        <td>
+                            <label id="new_link{{ forloop.counter }}" value="{{ link.shortened_link }}" editable=false>{{ link.shortened_link }}</label>&emsp;
+                        </td>
+                        <td>
+                            <div class="btn-group-horizontal">
+                                <a onclick="myFunction(forloop.counter)" class="btn btn-outline-success btn-sm">
+                                    Copy
+                                </a>
+                                <a class="btn btn-outline-danger btn-sm" href="{% url 'shortener:delete' link.pk %}">
+                                    Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="container text-center mt-5">
+        <h1 class="display-4">You seem to have no saved links.<br>Go ahead and create one!</h1> <hr>
+        <a href="{% url 'shortener:shorten' %}" class="btn btn-primary mt-3">Create</a>
+    </div>
+{% endif %}
+
+<script>
+function myFunction(id) {
+    var copyText = document.getElementById("new_link" + id);
+    copyText.select();
+    copyText.setSelectionRange(0, 12)
+    document.execCommand("copy");
+    // alert("Copied the text: " + copyText.value);
+}
+</script>
+
+{% endblock %}

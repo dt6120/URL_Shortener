@@ -1,0 +1,16 @@
+{% extends 'shortener/base.html' %}
+
+{% block content %}
+<div class="container mt-3">
+    <h1 class="alert alert-info">Sign Up</h1>
+
+    <h2>{{ error }}</h2>
+
+    <form method="post" class="border p-3" style="width:70%">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Submit</button>
+        &emsp;Already a user <a href="{% url 'login_user' %}">Login</a>
+    </form>
+</div>
+{% endblock %}

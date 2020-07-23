@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+	<meta name="viewport"
+          content="width=device-width, initial-scale=1">
+	<link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+	<link rel="stylesheet"
+          href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
+          crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+	{% load static %}
+</head>
+<body>
+    <div class="container-fluid p-0">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
+			<a class="navbar-brand" href="{% url 'home' %}">
+				<img src="{% static 'shortener/blue.jpg' %}" class="rounded-circle" width="30" height="30">
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				{% block navbar %}{% endblock %}
+				<ul class="navbar-nav ml-10">
+					{% if user.is_authenticated %}
+						<li>
+							<form action="{% url 'logout_user' %}" method="post">
+								{% csrf_token %}
+								Welcome {{ user }}&emsp;
+								<button type="submit" class="btn btn-outline-warning"><i class="fas fa-power-off"></i> Logout</button>
+							</form>
+						</li>
+					{% else %}
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+								Welcome&ensp;
+							</a>
+							<div class="dropdown-menu">
+								<a class="dropdown-item" href="{% url 'signup_user' %}"><i class="fas fa-user-plus"></i> Sign Up</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="{% url 'login_user' %}"><i class="fas fa-power-off"></i> Login</a>
+							</div>
+						</li>
+					{% endif %}
+				</ul>
+			</div>
+		</nav>
+	</div>
+
+    {% block content %}
+    {% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+{% extends 'shortener/base.html' %}
+
+{% block navbar %}
+
+<ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url 'shortener:shorten' %}"><i class="fas fa-link"></i> URL Shortener</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'shortener:check' %}"><i class="fas fa-check"></i> Check availability</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'shortener:my_links' %}"><i class="fas fa-list"></i> My links</a>
+    </li>
+    <li class="nav-item">
+        <form class="form-inline my-2 my-lg-0" action="{% url 'shortener:goto_new' %}">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
+            <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </li>
+</ul>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container text-center">
+    <h1 class="display-3">Shorten URLS</h1>
+    <p><strong>{{ error }}</strong></p>
+    <form method="post" class="border p-3 m-5">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Shorten</button>
+    </form>
+    Shortened URL: <mark><code><u>{{ new_link }}</u></code></mark>
+</div>
+
+{% endblock %}
